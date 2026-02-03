@@ -155,7 +155,9 @@ class CBPGetDepartmentHeadActivity extends CBPActivity
         $ufHead = $userService->getDepartmentHead($this->DepartmentId);
 
         $this->HeadUser = $this->prepareHeadUser($ufHead);
-        $this->HeadUserPrintable = CBPHelper::ConvertUserToPrintableForm($ufHead);
+        $this->HeadUserPrintable = $this->HeadUser !== null
+            ? CBPHelper::ConvertUserToPrintableForm($ufHead)
+            : '';
 
 
         return CBPActivityExecutionStatus::Closed;
@@ -163,6 +165,10 @@ class CBPGetDepartmentHeadActivity extends CBPActivity
 
     protected function prepareHeadUser($userId)
     {
+        if (empty($userId)) {
+            return null;
+        }
+
         return 'user_' . $userId;
 
     }
